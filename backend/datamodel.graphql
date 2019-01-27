@@ -19,7 +19,6 @@ type User {
   resetTokenExpiry: Float
   permissions: [Permission]
   classes: [Class!]! @relation(name:"MyClasses" onDelete: CASCADE)
-  # classMembers: [Class!]!
 }
 
 type Class {
@@ -27,6 +26,6 @@ type Class {
   title: String!
   description: String!
   user: User! @relation(name:"MyClasses")
-  # members: [User!]! 
+  members: [User!]! @relation(name: "User")
 }
 
