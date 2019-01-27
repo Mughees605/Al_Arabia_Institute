@@ -1,0 +1,32 @@
+enum Permission{
+  ADMIN
+  USER
+  CLASSREATE
+  CLASSUPDATE
+  CLASSDELETE
+  MEMBERADD
+  MEMBERDELETE
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  image: String
+  largeImage: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission]
+  classes: [Class!]! @relation(name:"MyClasses" onDelete: CASCADE)
+  # classMembers: [Class!]!
+}
+
+type Class {
+  id: ID! @unique
+  title: String!
+  description: String!
+  user: User! @relation(name:"MyClasses")
+  # members: [User!]! 
+}
+
