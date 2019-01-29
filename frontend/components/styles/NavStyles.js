@@ -29,7 +29,7 @@ const NavStyles = styled.ul`
       height: 100%;
       left: 0;
       position: absolute;
-      transform: skew(-20deg);
+      /*transform: skew(-20deg);*/
       top: 0;
       bottom: 0;
     }
