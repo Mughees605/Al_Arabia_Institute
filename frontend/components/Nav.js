@@ -1,24 +1,38 @@
 import Link from 'next/link';
 import NavStyles from './styles/NavStyles';
-
-
+import User from './User';
+import Signout from './Signout';
 
 const Nav = () => (
-        <NavStyles>
-            <Link href="/items">
-                <a>Classes</a>
-            </Link>
-            <Link href="/me">
-                <a>Account</a>
-            </Link>
-            <Link href="/me">
-                <a>SignOut</a>
-            </Link>
-            <Link href="/signup">
-                <a>Sign In</a>
-            </Link>
+    <User>
+        {({ data: { me } }) => (
+            <NavStyles>
+                {
+                    me && (
+                        <>
+                            <Link href="/items">
+                                <a>Classes</a>
+                            </Link>
+                            <Link href="/me">
+                                <a>Account</a>
+                            </Link>
+                            <Link href="/me">
+                                <a>Create Class</a>
+                            </Link>
+                            <Signout />
+                        </>
+                    )
+                }
+                {!me && (
+                    <Link href="/signup">
+                        <a>Sign In</a>
+                    </Link>
+                )}
+            </NavStyles>
 
-        </NavStyles>
+        )}
+    </User>
+
 
 );
 
