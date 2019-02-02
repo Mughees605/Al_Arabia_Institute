@@ -16,7 +16,7 @@ const Nav = () => (
                             <Link href="/me">
                                 <a>Account</a>
                             </Link>
-                            <Link href="/me">
+                            <Link href="/createclass">
                                 <a>Create Class</a>
                             </Link>
                             <Signout />

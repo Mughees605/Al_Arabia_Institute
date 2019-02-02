@@ -1,7 +1,7 @@
 enum Permission{
   ADMIN
   USER
-  CLASSREATE
+  CLASSCREATE
   CLASSUPDATE
   CLASSDELETE
   MEMBERADD
@@ -25,6 +25,7 @@ type Class {
   id: ID! @unique
   title: String!
   description: String!
+  level: String!
   user: User! @relation(name:"MyClasses")
   members: [User!]! @relation(name: "User")
 }

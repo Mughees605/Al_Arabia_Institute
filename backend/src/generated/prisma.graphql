@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hafiz-mughees-siddiqui-d7021d/al_arabia/dev
-# timestamp: Sun Jan 27 2019 23:53:33 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Feb 02 2019 16:21:40 GMT+0500 (Pakistan Standard Time)
 
 type AggregateClass {
   count: Int!
@@ -18,6 +18,7 @@ type Class implements Node {
   id: ID!
   title: String!
   description: String!
+  level: String!
   user: User!
   members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
@@ -35,6 +36,7 @@ type ClassConnection {
 input ClassCreateInput {
   title: String!
   description: String!
+  level: String!
   user: UserCreateOneWithoutClassesInput!
   members: UserCreateManyInput
 }
@@ -47,6 +49,7 @@ input ClassCreateManyWithoutUserInput {
 input ClassCreateWithoutUserInput {
   title: String!
   description: String!
+  level: String!
   members: UserCreateManyInput
 }
 
@@ -66,6 +69,8 @@ enum ClassOrderByInput {
   title_DESC
   description_ASC
   description_DESC
+  level_ASC
+  level_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -76,6 +81,7 @@ type ClassPreviousValues {
   id: ID!
   title: String!
   description: String!
+  level: String!
 }
 
 input ClassScalarWhereInput {
@@ -207,6 +213,46 @@ input ClassScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  level: String
+
+  """All values that are not equal to given value."""
+  level_not: String
+
+  """All values that are contained in given list."""
+  level_in: [String!]
+
+  """All values that are not contained in given list."""
+  level_not_in: [String!]
+
+  """All values less than the given value."""
+  level_lt: String
+
+  """All values less than or equal the given value."""
+  level_lte: String
+
+  """All values greater than the given value."""
+  level_gt: String
+
+  """All values greater than or equal the given value."""
+  level_gte: String
+
+  """All values containing the given string."""
+  level_contains: String
+
+  """All values not containing the given string."""
+  level_not_contains: String
+
+  """All values starting with the given string."""
+  level_starts_with: String
+
+  """All values not starting with the given string."""
+  level_not_starts_with: String
+
+  """All values ending with the given string."""
+  level_ends_with: String
+
+  """All values not ending with the given string."""
+  level_not_ends_with: String
 }
 
 type ClassSubscriptionPayload {
@@ -251,6 +297,7 @@ input ClassSubscriptionWhereInput {
 input ClassUpdateInput {
   title: String
   description: String
+  level: String
   user: UserUpdateOneRequiredWithoutClassesInput
   members: UserUpdateManyInput
 }
@@ -258,11 +305,13 @@ input ClassUpdateInput {
 input ClassUpdateManyDataInput {
   title: String
   description: String
+  level: String
 }
 
 input ClassUpdateManyMutationInput {
   title: String
   description: String
+  level: String
 }
 
 input ClassUpdateManyWithoutUserInput {
@@ -285,6 +334,7 @@ input ClassUpdateManyWithWhereNestedInput {
 input ClassUpdateWithoutUserDataInput {
   title: String
   description: String
+  level: String
   members: UserUpdateManyInput
 }
 
@@ -428,6 +478,46 @@ input ClassWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  level: String
+
+  """All values that are not equal to given value."""
+  level_not: String
+
+  """All values that are contained in given list."""
+  level_in: [String!]
+
+  """All values that are not contained in given list."""
+  level_not_in: [String!]
+
+  """All values less than the given value."""
+  level_lt: String
+
+  """All values less than or equal the given value."""
+  level_lte: String
+
+  """All values greater than the given value."""
+  level_gt: String
+
+  """All values greater than or equal the given value."""
+  level_gte: String
+
+  """All values containing the given string."""
+  level_contains: String
+
+  """All values not containing the given string."""
+  level_not_contains: String
+
+  """All values starting with the given string."""
+  level_starts_with: String
+
+  """All values not starting with the given string."""
+  level_not_starts_with: String
+
+  """All values ending with the given string."""
+  level_ends_with: String
+
+  """All values not ending with the given string."""
+  level_not_ends_with: String
   user: UserWhereInput
   members_every: UserWhereInput
   members_some: UserWhereInput
@@ -489,7 +579,7 @@ type PageInfo {
 enum Permission {
   ADMIN
   USER
-  CLASSREATE
+  CLASSCREATE
   CLASSUPDATE
   CLASSDELETE
   MEMBERADD
