@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { hasPermission } = require('./../utils');
 
 const mutations = {
     async signup(parent, args, ctx, info) {
@@ -54,6 +55,35 @@ const mutations = {
         return {
           message : "Good Bye!"
         }
+      },
+      async createClass(parent, args, ctx, info){
+        //1. First check the user is authenticated or not
+        if(!ctx.request.userId){
+          throw new Error('You must be logged in to do that!');
+        }
+        //2. Then check if the user have permission to createClass or not
+        const hasPermission = ctx.request.user.permissions.some(
+          (permission) => ['ADMIN', 'CLASSCREATE'].includes(permission)
+        )
+        if(!hasPermission){
+          throw new Error("You don't have permission to do that!")
+        }
+        //3. Create the class and add the creator in class members
+        const createdClass = await ctx.db.mutation.createClass({
+          data: {
+            ...args,
+            user: {
+              connect: {
+                id: ctx.request.userId
+              }
+            },
+            members:{
+              connect: [{id: ctx.request.userId}]
+            }
+          }
+        })
+        //4 return class
+        return createdClass
       },
 };
 

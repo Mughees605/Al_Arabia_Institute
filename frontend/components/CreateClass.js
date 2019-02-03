@@ -9,16 +9,12 @@ const CREATE_CLASS_MUTATION = gql`
   mutation CREATE_CLASS_MUTATION(
     $title: String!
     $description: String!
-    $price: Int!
-    $image: String
-    $largeImage: String
+    $level: String!
   ) {
-    CreateClass(
+    createClass(
       title: $title
       description: $description
-      price: $price
-      image: $image
-      largeImage: $largeImage
+      level: $level
     ) {
       id
     }
