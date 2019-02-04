@@ -10,7 +10,7 @@ const Nav = () => (
                 {
                     me && (
                         <>
-                            <Link href="/items">
+                            <Link href="/">
                                 <a>Classes</a>
                             </Link>
                             <Link href="/me">
