@@ -26,6 +26,24 @@ const Query = {
         //3 return classes
         return classes
       },
+      async classes(parent, args, ctx, info){
+        //1 check if the user is loggedin or not
+        if (!ctx.request.userId) {
+          throw new Error("You must be logged in!")
+        }
+        //2. Then check if the user have permission to createClass or not
+        const hasPermission = ctx.request.user.permissions.some(
+          (permission) => ['ADMIN'].includes(permission)
+        )
+        if(!hasPermission){
+          throw new Error("You don't have permission to do that!")
+        }
+        
+        const classes = await ctx.db.query.classes({}, info);
+        //3 return classes
+        return classes
+      },
+      
 };
 
 module.exports = Query;
