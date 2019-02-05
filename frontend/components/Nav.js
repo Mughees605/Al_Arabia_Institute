@@ -11,22 +11,37 @@ const Nav = () => (
                     me && (
                         <>
                             <Link href="/">
-                                <a>Classes</a>
+                                <a>Home</a>
                             </Link>
                             <Link href="/me">
                                 <a>Account</a>
                             </Link>
-                            <Link href="/createclass">
-                                <a>Create Class</a>
-                            </Link>
+
+                            { // if user have admin permission the do this
+                                me.permissions.includes("ADMIN") && (
+                                    <>
+                                        <Link href="/classes">
+                                            <a>Classes</a>
+                                        </Link>
+                                        <Link href="/classes">
+                                            <a>Create Class</a>
+                                        </Link>
+                                    </>
+                                )
+                            }
                             <Signout />
                         </>
                     )
                 }
                 {!me && (
-                    <Link href="/signup">
-                        <a>Sign In</a>
-                    </Link>
+                    <>
+                        <Link href="/">
+                            <a>Home</a>
+                        </Link>
+                        {/* <Link href="/signup">
+                            <a>Sign In</a>
+                        </Link> */}
+                    </>
                 )}
             </NavStyles>
 
