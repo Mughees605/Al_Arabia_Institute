@@ -38,6 +38,12 @@ export default class Class extends Component {
             }}
           >
             <a>Edit ✏️</a>
+            
+          </Link>
+          <Link
+          >
+            <a>Delete ✏️</a>
+            
           </Link>
         </div>
       </ItemStyles>

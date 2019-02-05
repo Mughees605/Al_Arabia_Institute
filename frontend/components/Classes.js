@@ -3,11 +3,12 @@ import { Query } from 'react-apollo';
 import Class from './Class';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import Error from './ErrorMessage';
 
 
 const CLASSES_IN_I_AM_AS_MEMBER = gql`
 query{
-classesInIamAsMember {
+classes {
     id
     title
     description
@@ -39,10 +40,10 @@ class Classes extends React.Component {
                 >
                     {({ data, loading, error }) => {
                         if (loading) return <p>Loading...</p>;
-                        if (error) return <p>Error: {error.message}</p>;
+                        if (error) return <Error error={error}/>;
 
                         return (
-                            <ClassList>{data.classesInIamAsMember.map((item, i) => <Class item={item} key={item.id} />)}</ClassList>
+                            <ClassList>{data.classes.map((item, i) => <Class item={item} key={item.id} />)}</ClassList>
                         )
 
                     }}
