@@ -20,10 +20,10 @@ const Nav = () => (
                             { // if user have admin permission the do this
                                 me.permissions.includes("ADMIN") && (
                                     <>
-                                        <Link href="/classes">
+                                        <Link href="/admin/classes">
                                             <a>Classes</a>
                                         </Link>
-                                        <Link href="/classes">
+                                        <Link href="/admin/createclass">
                                             <a>Create Class</a>
                                         </Link>
                                     </>
@@ -38,9 +38,6 @@ const Nav = () => (
                         <Link href="/">
                             <a>Home</a>
                         </Link>
-                        {/* <Link href="/signup">
-                            <a>Sign In</a>
-                        </Link> */}
                     </>
                 )}
             </NavStyles>
