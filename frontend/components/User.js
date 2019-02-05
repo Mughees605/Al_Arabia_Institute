@@ -8,6 +8,7 @@ query{
     id
     email
     name
+    permissions
   }
 }
 `
