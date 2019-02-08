@@ -38,9 +38,9 @@ const Query = {
         if(!hasPermission){
           throw new Error("You don't have permission to do that!")
         }
-        
+        //3. get all classes
         const classes = await ctx.db.query.classes({}, info);
-        //3 return classes
+        //4 return classes
         return classes
       },
       
