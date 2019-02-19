@@ -1,52 +1,61 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Link from 'next/link';
-import Title from './styles/Title';
-import ItemStyles from './styles/ItemStyles';
-import PriceTag from './styles/PriceTag';
-import formatMoney from '../lib/formatMoney';
-// import DeleteItem from './DeleteItem';
-// import AddToCart from './AddToCart';
+import Table from './styles/Table';
 
-export default class Class extends Component {
-  static propTypes = {
-    item: PropTypes.object.isRequired,
-  };
+export default class Class extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            body: [{ name: "First", Class: "Al Arabia", download: 'link' }, { name: "Third", Class: "Al Arabia", download: 'link' }, { name: "Third", Class: "Al Arabia", download: 'link' }]
+        }
+    }
+    render() {
+        return (
 
-  render() {
-    const { item } = this.props;
-    return (
-      <ItemStyles>
-        <Title>
-          <Link
-            href={{
-              pathname: '/item',
-              query: { id: item.id },
-            }}
-          >
-            <a>{item.title}</a>
-          </Link>
-        </Title>
-        <p>{item.description}</p>
-        <p>{item.level}</p>
-    
-        <div className="buttonList">
-          <Link
-            href={{
-              pathname: 'update',
-              query: { id: item.id },
-            }}
-          >
-            <a>Edit ✏️</a>
-            
-          </Link>
-          <Link
-          >
-            <a>Delete ✏️</a>
-            
-          </Link>
-        </div>
-      </ItemStyles>
-    );
-  }
+            <div>
+                {/* <Error error={error} /> */}
+                <div>
+                    {/* added check which is not in tutorials code */}
+                    <>
+                        <div style={{ display: "flex" }}>
+                            <h2 >Class {this.props.id} Recordings</h2>
+                            <div style={{ marginLeft: "auto", order: 2, marginTop: "25px" }}>
+                                <Link
+                                    href={{
+                                        pathname: '/admin/upload',
+                                        query: { id: this.props.id },
+                                    }}
+                                >
+                                    <a>
+                                        Upload
+                                    </a>
+                                </Link>
+                            </div>
+                        </div>
+
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>S.NO</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>{this.state.body.map((data, i) => (
+                                <tr key={i}>
+                                    <td>{i++}</td>
+                                    <td>{data.name}</td>
+                                    <td>{data.Class}</td>
+                                    <td>{data.download}</td>
+                                </tr>
+                            ))}</tbody>
+                        </Table>
+                    </>
+
+                </div>
+            </div>
+
+        )
+    }
 }

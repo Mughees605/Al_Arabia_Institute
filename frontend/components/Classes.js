@@ -1,6 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import Class from './Class';
+import ClassItem from './ClassItem';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import Error from './ErrorMessage';
@@ -43,7 +43,7 @@ class Classes extends React.Component {
                         if (error) return <Error error={error}/>;
 
                         return (
-                            <ClassList>{data.classes.map((item, i) => <Class item={item} key={item.id} />)}</ClassList>
+                            <ClassList>{data.classes.map((item, i) => <ClassItem item={item} key={item.id} />)}</ClassList>
                         )
 
                     }}
