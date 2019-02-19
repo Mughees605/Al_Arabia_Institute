@@ -28,5 +28,13 @@ type Class {
   level: String!
   user: User! @relation(name:"MyClasses")
   members: [User!]! @relation(name: "User")
+  recordings: [Recording]! @relation(name:"Recordings")
 }
 
+type Recording {
+  id: ID! @unique
+  title: String!
+  description: String!
+  file_link: String!
+  class: Class! @relation(name:"Recordings")
+}
