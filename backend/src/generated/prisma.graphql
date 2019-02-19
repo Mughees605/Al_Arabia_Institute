@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/hafiz-mughees-siddiqui-d7021d/al_arabia/dev
-# timestamp: Sat Feb 02 2019 16:21:40 GMT+0500 (Pakistan Standard Time)
+# timestamp: Tue Feb 19 2019 19:01:59 GMT+0500 (Pakistan Standard Time)
 
 type AggregateClass {
+  count: Int!
+}
+
+type AggregateRecording {
   count: Int!
 }
 
@@ -21,6 +25,7 @@ type Class implements Node {
   level: String!
   user: User!
   members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  recordings(where: RecordingWhereInput, orderBy: RecordingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recording!]
 }
 
 """A connection to a list of items."""
@@ -39,6 +44,7 @@ input ClassCreateInput {
   level: String!
   user: UserCreateOneWithoutClassesInput!
   members: UserCreateManyInput
+  recordings: RecordingCreateManyWithoutClassInput
 }
 
 input ClassCreateManyWithoutUserInput {
@@ -46,11 +52,25 @@ input ClassCreateManyWithoutUserInput {
   connect: [ClassWhereUniqueInput!]
 }
 
+input ClassCreateOneWithoutRecordingsInput {
+  create: ClassCreateWithoutRecordingsInput
+  connect: ClassWhereUniqueInput
+}
+
+input ClassCreateWithoutRecordingsInput {
+  title: String!
+  description: String!
+  level: String!
+  user: UserCreateOneWithoutClassesInput!
+  members: UserCreateManyInput
+}
+
 input ClassCreateWithoutUserInput {
   title: String!
   description: String!
   level: String!
   members: UserCreateManyInput
+  recordings: RecordingCreateManyWithoutClassInput
 }
 
 """An edge in a connection."""
@@ -300,6 +320,7 @@ input ClassUpdateInput {
   level: String
   user: UserUpdateOneRequiredWithoutClassesInput
   members: UserUpdateManyInput
+  recordings: RecordingUpdateManyWithoutClassInput
 }
 
 input ClassUpdateManyDataInput {
@@ -331,16 +352,37 @@ input ClassUpdateManyWithWhereNestedInput {
   data: ClassUpdateManyDataInput!
 }
 
+input ClassUpdateOneRequiredWithoutRecordingsInput {
+  create: ClassCreateWithoutRecordingsInput
+  connect: ClassWhereUniqueInput
+  update: ClassUpdateWithoutRecordingsDataInput
+  upsert: ClassUpsertWithoutRecordingsInput
+}
+
+input ClassUpdateWithoutRecordingsDataInput {
+  title: String
+  description: String
+  level: String
+  user: UserUpdateOneRequiredWithoutClassesInput
+  members: UserUpdateManyInput
+}
+
 input ClassUpdateWithoutUserDataInput {
   title: String
   description: String
   level: String
   members: UserUpdateManyInput
+  recordings: RecordingUpdateManyWithoutClassInput
 }
 
 input ClassUpdateWithWhereUniqueWithoutUserInput {
   where: ClassWhereUniqueInput!
   data: ClassUpdateWithoutUserDataInput!
+}
+
+input ClassUpsertWithoutRecordingsInput {
+  update: ClassUpdateWithoutRecordingsDataInput!
+  create: ClassCreateWithoutRecordingsInput!
 }
 
 input ClassUpsertWithWhereUniqueWithoutUserInput {
@@ -522,6 +564,9 @@ input ClassWhereInput {
   members_every: UserWhereInput
   members_some: UserWhereInput
   members_none: UserWhereInput
+  recordings_every: RecordingWhereInput
+  recordings_some: RecordingWhereInput
+  recordings_none: RecordingWhereInput
 }
 
 input ClassWhereUniqueInput {
@@ -536,16 +581,22 @@ scalar Long
 
 type Mutation {
   createClass(data: ClassCreateInput!): Class!
+  createRecording(data: RecordingCreateInput!): Recording!
   createUser(data: UserCreateInput!): User!
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
+  updateRecording(data: RecordingUpdateInput!, where: RecordingWhereUniqueInput!): Recording
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteClass(where: ClassWhereUniqueInput!): Class
+  deleteRecording(where: RecordingWhereUniqueInput!): Recording
   deleteUser(where: UserWhereUniqueInput!): User
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
+  upsertRecording(where: RecordingWhereUniqueInput!, create: RecordingCreateInput!, update: RecordingUpdateInput!): Recording!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
+  updateManyRecordings(data: RecordingUpdateManyMutationInput!, where: RecordingWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
+  deleteManyRecordings(where: RecordingWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -588,10 +639,13 @@ enum Permission {
 
 type Query {
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
+  recordings(where: RecordingWhereInput, orderBy: RecordingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Recording]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   class(where: ClassWhereUniqueInput!): Class
+  recording(where: RecordingWhereUniqueInput!): Recording
   user(where: UserWhereUniqueInput!): User
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
+  recordingsConnection(where: RecordingWhereInput, orderBy: RecordingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RecordingConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -601,8 +655,515 @@ type Query {
   ): Node
 }
 
+type Recording implements Node {
+  id: ID!
+  title: String!
+  description: String!
+  file_link: String!
+  class: Class!
+}
+
+"""A connection to a list of items."""
+type RecordingConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [RecordingEdge]!
+  aggregate: AggregateRecording!
+}
+
+input RecordingCreateInput {
+  title: String!
+  description: String!
+  file_link: String!
+  class: ClassCreateOneWithoutRecordingsInput!
+}
+
+input RecordingCreateManyWithoutClassInput {
+  create: [RecordingCreateWithoutClassInput!]
+  connect: [RecordingWhereUniqueInput!]
+}
+
+input RecordingCreateWithoutClassInput {
+  title: String!
+  description: String!
+  file_link: String!
+}
+
+"""An edge in a connection."""
+type RecordingEdge {
+  """The item at the end of the edge."""
+  node: Recording!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum RecordingOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  file_link_ASC
+  file_link_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type RecordingPreviousValues {
+  id: ID!
+  title: String!
+  description: String!
+  file_link: String!
+}
+
+input RecordingScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RecordingScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RecordingScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RecordingScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  file_link: String
+
+  """All values that are not equal to given value."""
+  file_link_not: String
+
+  """All values that are contained in given list."""
+  file_link_in: [String!]
+
+  """All values that are not contained in given list."""
+  file_link_not_in: [String!]
+
+  """All values less than the given value."""
+  file_link_lt: String
+
+  """All values less than or equal the given value."""
+  file_link_lte: String
+
+  """All values greater than the given value."""
+  file_link_gt: String
+
+  """All values greater than or equal the given value."""
+  file_link_gte: String
+
+  """All values containing the given string."""
+  file_link_contains: String
+
+  """All values not containing the given string."""
+  file_link_not_contains: String
+
+  """All values starting with the given string."""
+  file_link_starts_with: String
+
+  """All values not starting with the given string."""
+  file_link_not_starts_with: String
+
+  """All values ending with the given string."""
+  file_link_ends_with: String
+
+  """All values not ending with the given string."""
+  file_link_not_ends_with: String
+}
+
+type RecordingSubscriptionPayload {
+  mutation: MutationType!
+  node: Recording
+  updatedFields: [String!]
+  previousValues: RecordingPreviousValues
+}
+
+input RecordingSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RecordingSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RecordingSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RecordingSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: RecordingWhereInput
+}
+
+input RecordingUpdateInput {
+  title: String
+  description: String
+  file_link: String
+  class: ClassUpdateOneRequiredWithoutRecordingsInput
+}
+
+input RecordingUpdateManyDataInput {
+  title: String
+  description: String
+  file_link: String
+}
+
+input RecordingUpdateManyMutationInput {
+  title: String
+  description: String
+  file_link: String
+}
+
+input RecordingUpdateManyWithoutClassInput {
+  create: [RecordingCreateWithoutClassInput!]
+  connect: [RecordingWhereUniqueInput!]
+  set: [RecordingWhereUniqueInput!]
+  disconnect: [RecordingWhereUniqueInput!]
+  delete: [RecordingWhereUniqueInput!]
+  update: [RecordingUpdateWithWhereUniqueWithoutClassInput!]
+  updateMany: [RecordingUpdateManyWithWhereNestedInput!]
+  deleteMany: [RecordingScalarWhereInput!]
+  upsert: [RecordingUpsertWithWhereUniqueWithoutClassInput!]
+}
+
+input RecordingUpdateManyWithWhereNestedInput {
+  where: RecordingScalarWhereInput!
+  data: RecordingUpdateManyDataInput!
+}
+
+input RecordingUpdateWithoutClassDataInput {
+  title: String
+  description: String
+  file_link: String
+}
+
+input RecordingUpdateWithWhereUniqueWithoutClassInput {
+  where: RecordingWhereUniqueInput!
+  data: RecordingUpdateWithoutClassDataInput!
+}
+
+input RecordingUpsertWithWhereUniqueWithoutClassInput {
+  where: RecordingWhereUniqueInput!
+  update: RecordingUpdateWithoutClassDataInput!
+  create: RecordingCreateWithoutClassInput!
+}
+
+input RecordingWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RecordingWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RecordingWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RecordingWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  file_link: String
+
+  """All values that are not equal to given value."""
+  file_link_not: String
+
+  """All values that are contained in given list."""
+  file_link_in: [String!]
+
+  """All values that are not contained in given list."""
+  file_link_not_in: [String!]
+
+  """All values less than the given value."""
+  file_link_lt: String
+
+  """All values less than or equal the given value."""
+  file_link_lte: String
+
+  """All values greater than the given value."""
+  file_link_gt: String
+
+  """All values greater than or equal the given value."""
+  file_link_gte: String
+
+  """All values containing the given string."""
+  file_link_contains: String
+
+  """All values not containing the given string."""
+  file_link_not_contains: String
+
+  """All values starting with the given string."""
+  file_link_starts_with: String
+
+  """All values not starting with the given string."""
+  file_link_not_starts_with: String
+
+  """All values ending with the given string."""
+  file_link_ends_with: String
+
+  """All values not ending with the given string."""
+  file_link_not_ends_with: String
+  class: ClassWhereInput
+}
+
+input RecordingWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
+  recording(where: RecordingSubscriptionWhereInput): RecordingSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
