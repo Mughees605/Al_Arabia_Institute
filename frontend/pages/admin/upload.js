@@ -2,7 +2,7 @@ import Upload from "./../../components/Upload";
 import AdminGate from "./../../components/AdminGate";
 import PleaseSignIn from "./../../components/PleaseSignIn";
 
-const UploadPage = props => (
+const UploadRecordingPage = props => (
     <div>
         <PleaseSignIn>
             <AdminGate>
@@ -12,4 +12,4 @@ const UploadPage = props => (
     </div>
 );
 
-export default UploadPage;
+export default UploadRecordingPage;

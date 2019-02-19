@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Table from './styles/Table';
+import SickButton from './styles/SickButton';
 
 export default class Class extends React.Component {
     constructor(props) {
@@ -26,9 +27,13 @@ export default class Class extends React.Component {
                                         query: { id: this.props.id },
                                     }}
                                 >
-                                    <a>
+                                    <SickButton
+                                        type="button"
+                                        // disabled={loading}
+                                        // onClick={updatePermissions}
+                                    >
                                         Upload
-                                    </a>
+                                    </SickButton>
                                 </Link>
                             </div>
                         </div>
