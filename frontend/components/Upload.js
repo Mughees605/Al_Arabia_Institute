@@ -5,6 +5,7 @@ import Router from 'next/router';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import storage from './../lib/firebase';
+import { CLASS_QUERY } from './Class';
 
 const UPLOAD_RECORDING_MUTATION = gql`
   mutation UPLOAD_RECORDING_MUTATION(
@@ -13,13 +14,15 @@ const UPLOAD_RECORDING_MUTATION = gql`
     $file_link: String!
     $class_id: ID!
   ) {
-    createRecording(
+    uploadRecording(
       title: $title
       description: $description
       file_link: $file_link
       class_id: $class_id
     ) {
       id
+      title
+      description
     }
   }
 `;
@@ -84,19 +87,26 @@ class UploadRecording extends Component {
                     file_link: this.state.file_link,
                     class_id: this.props.class_id
                 }}
+                refetchQueries={
+                    [{
+                        query: CLASS_QUERY,
+                        variables: {
+                            class_id: this.props.class_id
+                        }
+                    }]
+                }
             >
-                {(createItem, { loading, error }) => (
+                {(uploadRecording, { loading, error }) => (
                     <Form
                         onSubmit={async e => {
                             // Stop the form from submitting
                             e.preventDefault();
                             // call the mutation
-                            const res = await createItem();
+                            await uploadRecording();
                             // change them to the single item page
-                            console.log(res);
                             Router.push({
-                                pathname: '/item',
-                                query: { id: res.data.createItem.id },
+                                pathname: '/admin/class',
+                                query: { class_id: this.props.class_id },
                             });
                         }}
                     >
