@@ -88,6 +88,36 @@ const mutations = {
       },
       async uploadFile(parent, { file }, ctx, info) {
         return await processUpload(file, ctx)
+      },
+      async uploadRecording(parent, args, ctx, info){
+        //1. First check the user is authenticated or not
+        if(!ctx.request.userId){
+          throw new Error('You must be logged in to do that!');
+        }
+        //2. Then check if the user have permission to uploadRecording or not
+        const hasPermission = ctx.request.user.permissions.some(
+          (permission) => ['ADMIN'].includes(permission)
+        )
+        if(!hasPermission){
+          throw new Error("You don't have permission to do that!")
+        }   
+        // 3. Create a Recording
+        const createRecording = await ctx.db.mutation.createRecording({
+          data: {
+            title: args.title,
+            description: args.description,
+            file_link: args.file_link,
+            class: {
+              connect: {
+                id: args.class_id
+              }
+            },
+          }
+        }, info)
+        console.log(createRecording)
+
+        return createRecording
+
       }
 };
 
