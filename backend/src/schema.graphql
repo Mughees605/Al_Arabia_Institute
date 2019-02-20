@@ -21,11 +21,13 @@ type Mutation {
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
   createClass(title: String!, description: String!, level:String!): Class!
+  uploadRecording(title: String!, description: String!, file_link:String, class_id:ID!): Recording!
   uploadFile (file: Upload!, class_id: ID!): File!
 }
 
 type Query {
     me: User
     classes: [Class]
+    class(where: ClassWhereUniqueInput): Class!
     classesInIamAsMember: [Class!]!
 }
