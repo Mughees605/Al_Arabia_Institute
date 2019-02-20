@@ -6,7 +6,7 @@ const ClassPage = props => (
   <div>
     <PleaseSignIn>
       <AdminGate>
-        <Class id={props.query.id || ''}/>
+        <Class class_id={props.query.class_id || ''}/>
       </AdminGate>
     </PleaseSignIn>
   </div>

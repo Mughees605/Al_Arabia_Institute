@@ -19,18 +19,16 @@ export default class Class extends React.Component {
                     {/* added check which is not in tutorials code */}
                     <>
                         <div style={{ display: "flex" }}>
-                            <h2 >Class {this.props.id} Recordings</h2>
+                            <h2 >Class {this.props.class_id} Recordings</h2>
                             <div style={{ marginLeft: "auto", order: 2, marginTop: "25px" }}>
                                 <Link
                                     href={{
                                         pathname: '/admin/upload',
-                                        query: { id: this.props.id },
+                                        query: { class_id: this.props.class_id },
                                     }}
                                 >
                                     <SickButton
                                         type="button"
-                                        // disabled={loading}
-                                        // onClick={updatePermissions}
                                     >
                                         Upload
                                     </SickButton>

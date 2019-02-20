@@ -19,7 +19,7 @@ export default class ClassItem extends Component {
           <Link
             href={{
               pathname: '/admin/class',
-              query: { id: item.id },
+              query: { class_id: item.id },
             }}
           >
             <a>{item.title}</a>
