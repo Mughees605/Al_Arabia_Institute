@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
+import storage from './../lib/firebase';
 
 const UPLOAD_RECORDING_MUTATION = gql`
   mutation UPLOAD_RECORDING_MUTATION(
@@ -22,41 +23,68 @@ const UPLOAD_RECORDING_MUTATION = gql`
     }
   }
 `;
+// TODO WILL USE THIS UPLOAD MUTATION AFTER AWS ACCOUNT VERIFICATION//
+// const UPLOAD_File = gql`
+//   mutation uploadFile(
+//     $file: Upload!
+//     $class_id: ID!
+//   ) {
+//     uploadFile(
+//       file: $file
+//       class_id: $class_id
+//     ) {
+//       id
+//     }
+//   }
+// `
 
 class UploadRecording extends Component {
     state = {
         title: '',
         description: '',
-        file_link: ''
+        file_link: '',
+        uploading: false
     };
     handleChange = e => {
         const { name, type, value } = e.target;
         const val = type === 'number' ? parseFloat(value) : value;
         this.setState({ [name]: val });
     };
-    uploadFile = async e => {
-        console.log('Upload file')
-        const files = e.target.files;
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('upload_preset', 'sickfits');
+    uploadFile = async (e) => {
+        try {
+            this.setState({ uploading: true, file_link: '' });
 
-        const res = await fetch('https://api.cloudinary.com/v1_1/dwra2lvow/image/upload',
-            {
-                method: 'POST',
-                body: data
-            });
+            const files = e.target.files;
+            const file = files[0];
+            // creating firebase storage reference
+            const storageRef = storage.ref();
+            // file path need to saved in firebase storage with class_id and file name
+            const mainFile = storageRef.child(`${this.props.class_id}/${file.name}`);
 
-        const file = await res.json();
-        console.log(file);
-        this.setState({
-            image: file.secure_url,
-            largeImage: file.eager[0].secure_url
-        })
+            await mainFile.put(file)
+
+            const url = await mainFile.getDownloadURL();
+
+            this.setState({ uploading: false, file_link: url });
+            alert(`File successfully uploaded \n ${url}`);
+
+        } catch (error) {
+            this.setState({ uploading: false });
+            alert('error uploading files')
+        }
+
     }
     render() {
         return (
-            <Mutation mutation={UPLOAD_RECORDING_MUTATION} variables={this.state}>
+            <Mutation
+                mutation={UPLOAD_RECORDING_MUTATION}
+                variables={{
+                    title: this.state.title,
+                    description: this.state.description,
+                    file_link: this.state.file_link,
+                    class_id: this.props.class_id
+                }}
+            >
                 {(createItem, { loading, error }) => (
                     <Form
                         onSubmit={async e => {
@@ -73,16 +101,17 @@ class UploadRecording extends Component {
                         }}
                     >
                         <Error error={error} />
-                        <fieldset disabled={loading} aria-busy={loading}>
+                        <fieldset disabled={loading || this.state.uploading} aria-busy={loading || this.state.uploading}>
+
                             <label htmlFor="file">
                                 File
-                                  <input
+                                 <input
                                     type="file"
                                     id="file"
                                     name="file"
                                     placeholder="Title"
                                     required
-                                    onChange={this.uploadFile}
+                                    onChange={(e) => this.uploadFile(e)}
                                 />
                             </label>
 
