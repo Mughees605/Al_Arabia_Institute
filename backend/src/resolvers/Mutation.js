@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { hasPermission } = require('./../utils');
+const { processUpload } = require('./../modules/fileApi');
 
 const mutations = {
     async signup(parent, args, ctx, info) {
@@ -85,6 +86,9 @@ const mutations = {
         //4 return class
         return createdClass
       },
+      async uploadFile(parent, { file }, ctx, info) {
+        return await processUpload(file, ctx)
+      }
 };
 
 module.exports = mutations;
