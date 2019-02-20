@@ -6,7 +6,7 @@ const UploadRecordingPage = props => (
     <div>
         <PleaseSignIn>
             <AdminGate>
-                <Upload id={props.query.id || ''} />
+                <Upload class_id={props.query.class_id || ''} />
             </AdminGate>
         </PleaseSignIn>
     </div>
