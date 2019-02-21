@@ -128,7 +128,9 @@ class Recording extends React.Component {
                 <td>{recording.class.title}</td>
                 <td>{recording.title}</td>
                 <td>{recording.description}</td>
-                <td>{recording.file_link}</td>
+                <td>
+                    <a href={recording.file_link} target="_blank">Download</a>
+                </td>
             </tr>
         )
     }
