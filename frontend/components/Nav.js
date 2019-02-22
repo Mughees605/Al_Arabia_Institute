@@ -1,7 +1,7 @@
 import Router from 'next/router';
 import { Nav, Form, Button, FormControl } from 'react-bootstrap';
 import User from './User';
-import Signout from './Signout';
+import Signout from './AdminComponents/Signout';
 
 const route = (pathname) => {
     Router.push({

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import Form from './styles/Form';
-import Error from './ErrorMessage';
+import Form from '../styles/Form';
+import Error from '../ErrorMessage';
 
 const CREATE_CLASS_MUTATION = gql`
   mutation CREATE_CLASS_MUTATION(

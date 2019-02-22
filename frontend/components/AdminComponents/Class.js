@@ -3,9 +3,9 @@ import Link from 'next/link';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import Table from './styles/Table';
-import SickButton from './styles/SickButton';
-import Error from './ErrorMessage';
+import Table from '../styles/Table';
+import SickButton from '../styles/SickButton';
+import Error from '../ErrorMessage';
 
 const CLASS_QUERY = gql`
 query CLASS_QUERY($class_id: ID!){

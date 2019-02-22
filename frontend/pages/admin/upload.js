@@ -1,6 +1,6 @@
-import Upload from "./../../components/Upload";
-import AdminGate from "./../../components/AdminGate";
-import PleaseSignIn from "./../../components/PleaseSignIn";
+import Upload from "./../../components/AdminComponents/Upload";
+import AdminGate from "./../../components/AdminComponents/AdminGate";
+import PleaseSignIn from "./../../components/AdminComponents/PleaseSignIn";
 
 const UploadRecordingPage = props => (
     <div>

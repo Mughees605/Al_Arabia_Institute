@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
-import Form from './styles/Form';
-import Error from './ErrorMessage';
-import storage from './../lib/firebase';
+import Form from '../styles/Form';
+import Error from '../ErrorMessage';
+import storage from '../../lib/firebase';
 import { CLASS_QUERY } from './Class';
 
 const UPLOAD_RECORDING_MUTATION = gql`

@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import ClassItem from './ClassItem';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import Error from './ErrorMessage';
+import Error from '../ErrorMessage';
 
 
 const CLASSES_IN_I_AM_AS_MEMBER = gql`

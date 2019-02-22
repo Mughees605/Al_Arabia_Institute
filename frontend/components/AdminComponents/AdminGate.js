@@ -1,5 +1,5 @@
 import { Query } from 'react-apollo';
-import { CURRENT_USER_QUERY } from './User';
+import { CURRENT_USER_QUERY } from '../User';
 
 const AdminGate = props => (
   <Query query={CURRENT_USER_QUERY}>
