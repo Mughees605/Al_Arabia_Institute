@@ -49,7 +49,7 @@ class CreateClass extends Component {
                             console.log(res);
                             Router.push({
                                 pathname: '/item',
-                                query: { id: res.data.CreateClass.id },
+                                query: { id: res.data.createClass.id },
                             });
                         }}
                     >
