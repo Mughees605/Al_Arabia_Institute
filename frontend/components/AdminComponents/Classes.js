@@ -8,7 +8,7 @@ import Error from '../ErrorMessage';
 
 const CLASSES_IN_I_AM_AS_MEMBER = gql`
 query{
-classes {
+classesForAdmin {
     id
     title
     description
@@ -43,7 +43,7 @@ class Classes extends React.Component {
                         if (error) return <Error error={error}/>;
 
                         return (
-                            <ClassList>{data.classes.map((item, i) => <ClassItem item={item} key={item.id} />)}</ClassList>
+                            <ClassList>{data.classesForAdmin.map((item, i) => <ClassItem item={item} key={item.id} />)}</ClassList>
                         )
 
                     }}
