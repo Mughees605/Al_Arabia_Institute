@@ -27,7 +27,8 @@ type Mutation {
 
 type Query {
     me: User
-    classes: [Class]
+    classesForAdmin: [Class]
     class(where: ClassWhereUniqueInput): Class!
+    classes(where: ClassWhereUniqueInput): [Class]!
     classesInIamAsMember: [Class!]!
 }

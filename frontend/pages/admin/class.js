@@ -1,6 +1,6 @@
-import Class from "./../../components/Class";
-import AdminGate from "./../../components/AdminGate";
-import PleaseSignIn from "./../../components/PleaseSignIn";
+import Class from "./../../components/AdminComponents/Class";
+import AdminGate from "./../../components/AdminComponents/AdminGate";
+import PleaseSignIn from "./../../components/AdminComponents/PleaseSignIn";
 
 const ClassPage = props => (
   <div>

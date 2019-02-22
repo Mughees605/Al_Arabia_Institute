@@ -1,8 +1,9 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import ClassItem from './ClassItem';
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import Router from "next/router";
 import Error from './ErrorMessage';
 
 
@@ -13,44 +14,54 @@ classes {
     title
     description
     level
-    user{
-        name
-    }
   }
 }
 `
-const Center = styled.div`
-  text-align: center;
+const FlexWithSpaceBetween = styled.div`
+  display: flex;
+  justify-content: space-between
 `;
 
-const ClassList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 60px;
-  max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
-`
+const route = (pathname, query) => {
+    Router.push({
+        pathname,
+        query
+    })
+}
 
 class Classes extends React.Component {
     render() {
         return (
-            <Center>
-                <Query
-                    query={CLASSES_IN_I_AM_AS_MEMBER}
-                >
-                    {({ data, loading, error }) => {
-                        if (loading) return <p>Loading...</p>;
-                        if (error) return <Error error={error}/>;
 
-                        return (
-                            <ClassList>{data.classes.map((item, i) => <ClassItem item={item} key={item.id} />)}</ClassList>
-                        )
+            <Query
+                query={CLASSES_IN_I_AM_AS_MEMBER}
+            >
+                {({ data, loading, error }) => {
+                    if (loading) return <p>Loading...</p>;
+                    if (error) return <Error error={error} />;
 
-                    }}
-                </Query>
-            </Center>
+                    return (
+                        <ListGroup>{data.classes.map((item, i) => <ClassItem item={item} key={item.id} />)} </ListGroup>
+                    )
+
+                }}
+            </Query>
+
+
         )
     }
 }
 
 export default Classes;
+
+
+const ClassItem = ({ item }) => (
+    <ListGroupItem>
+        <FlexWithSpaceBetween>
+            <p>{item.title}</p>
+            <Button onClick={() => route("/class", { class_id: item.id })}>
+                Go To Course
+           </Button>
+        </FlexWithSpaceBetween>
+    </ListGroupItem>
+)

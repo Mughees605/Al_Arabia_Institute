@@ -2,6 +2,7 @@ const { forwardTo } = require("prisma-binding");
 
 const Query = {
     class: forwardTo('db'),
+    classes: forwardTo('db'),
     me(parent, args, ctx, info) {
         if (!ctx.request.userId) {
           return null;
@@ -28,7 +29,7 @@ const Query = {
         //3 return classes
         return classes
       },
-      async classes(parent, args, ctx, info){
+      async classesForAdmin(parent, args, ctx, info){
         //1 check if the user is loggedin or not
         if (!ctx.request.userId) {
           throw new Error("You must be logged in!")

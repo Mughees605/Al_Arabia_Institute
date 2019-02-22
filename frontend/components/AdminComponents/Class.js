@@ -1,9 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import Table from './styles/Table';
-import Error from './ErrorMessage';
+import Table from '../styles/Table';
+import SickButton from '../styles/SickButton';
+import Error from '../ErrorMessage';
 
 const CLASS_QUERY = gql`
 query CLASS_QUERY($class_id: ID!){
@@ -56,8 +58,22 @@ export default class Class extends React.Component {
                             <div>
                                 {/* added check which is not in tutorials code */}
                                 <>
-                                    <div >
+                                    <div style={{ display: "flex" }}>
                                         <h2 >Class {data.class.title} Recordings</h2>
+                                        <div style={{ marginLeft: "auto", order: 2, marginTop: "25px" }}>
+                                            <Link
+                                                href={{
+                                                    pathname: '/admin/upload',
+                                                    query: { class_id: this.props.class_id },
+                                                }}
+                                            >
+                                                <SickButton
+                                                    type="button"
+                                                >
+                                                    Upload
+                                                </SickButton>
+                                            </Link>
+                                        </div>
                                     </div>
 
                                     <Table>

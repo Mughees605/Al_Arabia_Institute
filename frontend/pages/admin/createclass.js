@@ -1,6 +1,6 @@
-import CreateClass from '../../components/CreateClass';
-import PleaseSignIn from '../../components/PleaseSignIn';
-import AdminGate from './../../components/AdminGate';
+import CreateClass from '../../components/AdminComponents/CreateClass';
+import PleaseSignIn from '../../components/AdminComponents/PleaseSignIn';
+import AdminGate from './../../components/AdminComponents/AdminGate';
 
 const CreateClassPage = props => (
     <div>
