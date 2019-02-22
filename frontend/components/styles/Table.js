@@ -5,7 +5,7 @@ const Table = styled.table`
   width: 100%;
   border: 1px solid ${props => props.theme.offWhite};
   thead {
-    font-size: 10px;
+    font-size: 20px;
   }
   td,
   th {
