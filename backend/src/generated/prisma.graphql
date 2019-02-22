@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/hafiz-mughees-siddiqui-d7021d/al_arabia/dev
-# timestamp: Tue Feb 19 2019 19:01:59 GMT+0500 (Pakistan Standard Time)
+# source: https://al-arabia-prod-2ce60bf5e3.herokuapp.com/al-arabia-prod/prod
+# timestamp: Fri Feb 22 2019 18:02:40 GMT+0500 (Pakistan Standard Time)
 
 type AggregateClass {
   count: Int!
@@ -338,7 +338,6 @@ input ClassUpdateManyMutationInput {
 input ClassUpdateManyWithoutUserInput {
   create: [ClassCreateWithoutUserInput!]
   connect: [ClassWhereUniqueInput!]
-  set: [ClassWhereUniqueInput!]
   disconnect: [ClassWhereUniqueInput!]
   delete: [ClassWhereUniqueInput!]
   update: [ClassUpdateWithWhereUniqueWithoutUserInput!]
@@ -954,7 +953,6 @@ input RecordingUpdateManyMutationInput {
 input RecordingUpdateManyWithoutClassInput {
   create: [RecordingCreateWithoutClassInput!]
   connect: [RecordingWhereUniqueInput!]
-  set: [RecordingWhereUniqueInput!]
   disconnect: [RecordingWhereUniqueInput!]
   delete: [RecordingWhereUniqueInput!]
   update: [RecordingUpdateWithWhereUniqueWithoutClassInput!]
@@ -1661,7 +1659,6 @@ input UserUpdateManyDataInput {
 input UserUpdateManyInput {
   create: [UserCreateInput!]
   connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
   disconnect: [UserWhereUniqueInput!]
   delete: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueNestedInput!]
