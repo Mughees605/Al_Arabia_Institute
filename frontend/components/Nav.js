@@ -47,14 +47,14 @@ const NavItem = () => (
                         !me && (
                             <>
                                 <Nav.Link onClick={() => route("/")}>
-                                    Books
+                                    Notes (coming soon)
                                  </Nav.Link>
                                 <Nav.Link onClick={() => route("/classes")}>
                                     Arabic Grammar
                                  </Nav.Link>
-                                <Nav.Link onClick={() => route("/contact-us")}>
+                                {/* <Nav.Link onClick={() => route("/contact-us")}>
                                     Contact Us
-                                </Nav.Link>
+                                </Nav.Link> */}
                             </>
                         )
                     }
